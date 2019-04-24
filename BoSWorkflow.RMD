@@ -1,0 +1,74 @@
+---
+title: "BoS Data"
+author: "Jill MacKay"
+date: "24 April 2019"
+output: html_document
+---
+
+
+# About
+If you use JISC online surveys (formerly Bristol Online Surveys) you will have a really consistent file format to deal with. Here's how I deal with mine. 
+
+
+## Intro to BoS Data
+There are two videos about BoS:
+* [Creating a Survey in BoS](https://media.ed.ac.uk/media/1_0fss9mxx)
+* [Exporting data to Excel](https://media.ed.ac.uk/media/1_091u2uy0)
+
+(We'll be using the same data)
+
+
+
+# The R Environment
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(readxl)
+library(likert)
+library(janitor)
+
+```
+
+
+
+# Basic import
+
+```{r}
+dat <- read_excel("data/results-for-bosdata-2019-04-24-1526.xlsx")
+
+dat <- dat %>% 
+  clean_names()
+
+head(dat)
+
+```
+
+
+# Splitting multiple selection questions
+
+```{r}
+
+wide_dat <- dat %>% 
+  separate(col = crisps, sep = ",",
+           into = paste0("crisp_",(1:(dat$crisps %>%
+                                           str_split(",") %>%
+                                           lapply(function(z) length(z)) %>%
+                                           unlist() %>%
+                                           max()
+           ))))
+
+
+head(wide_dat)
+  
+
+```
+
+
+# Recoding data for likert package
+
+```{r}
+
+
+```
+
+
